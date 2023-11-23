@@ -1,12 +1,12 @@
 <?php
-    $conn = mysqli_connect("localhost", "root", "", "equipments_db");
-    session_start();
-    if(!isset($_SESSION['username'])){
-       header('location:sign-in.php');
-       exit;
-  } else{
-		$user = $_SESSION['username'];
-	}
+$conn = mysqli_connect("localhost", "root", "", "equipments_db");
+session_start();
+if (!isset($_SESSION['username'])) {
+    header('location:sign-in.php');
+    exit;
+} else {
+    $user = $_SESSION['username'];
+}
 ?>
 
 <?php
@@ -25,12 +25,12 @@ if (isset($_POST['regBtn'])) {
     // Validate and sanitize user inputs
     $fullname = htmlspecialchars($fullname);
     $email = filter_var($email, FILTER_VALIDATE_EMAIL) ? $email : '';
-	$department = htmlspecialchars($department);
-	$position = htmlspecialchars($position);
-	$address = htmlspecialchars($address);
-	$city = htmlspecialchars($fullname);
-	$phone = htmlspecialchars($phone);
-	$gps = htmlspecialchars($gps);
+    $department = htmlspecialchars($department);
+    $position = htmlspecialchars($position);
+    $address = htmlspecialchars($address);
+    $city = htmlspecialchars($fullname);
+    $phone = htmlspecialchars($phone);
+    $gps = htmlspecialchars($gps);
 
     if ($fullname && $email && $department && $position && $address && $city && $phone && $gps) {
         // Create connection
@@ -40,7 +40,7 @@ if (isset($_POST['regBtn'])) {
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
         }
-		// Check if user already exists
+        // Check if user already exists
         $checkQuery = "SELECT * FROM users WHERE email = ?";
         $checkStmt = $conn->prepare($checkQuery);
         $checkStmt->bind_param("s", $email);
@@ -51,39 +51,39 @@ if (isset($_POST['regBtn'])) {
             echo "<script>alert('User with this email already exists.')</script>";
         } else {
 
-			// Validate and process uploaded image
-			$targetDir = "uploads/";
-			$profilePic = $_FILES['profilePic']['name'];
-			$targetFilePath = $targetDir . $profilePic;
-			$fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
+            // Validate and process uploaded image
+            $targetDir = "uploads/";
+            $profilePic = $_FILES['profilePic']['name'];
+            $targetFilePath = $targetDir . $profilePic;
+            $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
 
-			$allowTypes = array('jpg', 'jpeg', 'png', 'gif');
-			if (in_array($fileType, $allowTypes)) {
-				if (move_uploaded_file($_FILES['profilePic']['tmp_name'], $targetFilePath)) {
-					// Prepare and execute SQL statement
-					$sql = "INSERT INTO users (fullname, email, department, position, address, password, city, phone, gps, profile_pic, date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-					$stmt = $conn->prepare($sql);
-					$stmt->bind_param("sssssssssss", $fullname, $email, $department, $position, $address, $password, $city, $phone, $gps, $profilePic, $date);
+            $allowTypes = array('jpg', 'jpeg', 'png', 'gif');
+            if (in_array($fileType, $allowTypes)) {
+                if (move_uploaded_file($_FILES['profilePic']['tmp_name'], $targetFilePath)) {
+                    // Prepare and execute SQL statement
+                    $sql = "INSERT INTO users (fullname, email, department, position, address, password, city, phone, gps, profile_pic, date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    $stmt = $conn->prepare($sql);
+                    $stmt->bind_param("sssssssssss", $fullname, $email, $department, $position, $address, $password, $city, $phone, $gps, $profilePic, $date);
 
-					if ($stmt->execute()) {
-						echo "<script>alert('User added successfully')</script>";
-					} else {
-						echo "<script>alert('Error adding user.')</script>";
-					}
-					$stmt->close();
-				} else {
-					echo "<script>alert('Could not upload image.')</script>";
-				}
-			} else {
-				echo "<script>alert('Invalid image format. Allowed formats: JPG, JPEG, PNG, GIF.')</script>";
-			}
+                    if ($stmt->execute()) {
+                        echo "<script>alert('User added successfully')</script>";
+                    } else {
+                        echo "<script>alert('Error adding user.')</script>";
+                    }
+                    $stmt->close();
+                } else {
+                    echo "<script>alert('Could not upload image.')</script>";
+                }
+            } else {
+                echo "<script>alert('Invalid image format. Allowed formats: JPG, JPEG, PNG, GIF.')</script>";
+            }
 
-			// Close connection
-			$conn->close();
-		} 
-	}else {
-			echo "<script>alert('Invalid input data.')</script>";
-		}
+            // Close connection
+            $conn->close();
+        }
+    } else {
+        echo "<script>alert('Invalid input data.')</script>";
+    }
 }
 ?>
 
@@ -117,37 +117,38 @@ if (isset($_POST['regBtn'])) {
 		<span class="mask bg-primary opacity-6"></span>
 	</div>
 
-	<?php include('aside.php'); ?>
+	<?php include 'aside.php';?>
 
 	<div class="main-content position-relative max-height-vh-100 h-100">
+	<?php include 'navbar.php';?>
 		<div class="card shadow-lg mx-4 card-profile-bottom">
 			<div class="card-body p-3">
 				<div class="row gx-4">
 					<div class="col-auto">
 						<?php
-							$fetchuser = $_SESSION['username'];
-							$stmt = $conn->prepare("SELECT * FROM users WHERE fullname = '$fetchuser'");
-							$stmt->execute();
-							$result = $stmt->get_result();
-							while ($row = $result->fetch_assoc()):
-						  ?>
+$fetchuser = $_SESSION['username'];
+$stmt = $conn->prepare("SELECT * FROM users WHERE fullname = '$fetchuser'");
+$stmt->execute();
+$result = $stmt->get_result();
+while ($row = $result->fetch_assoc()):
+?>
 						<div class="avatar avatar-xl position-relative">
-							<img src="uploads/<?= $row['profile_pic'] ?>" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
+							<img src="uploads/<?=$row['profile_pic']?>" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
 						</div>
 					</div>
 					<div class="col-auto my-auto">
 						<div class="h-100">
 							<h5 class="mb-1">
-								<?= $row['fullname'] ?>
+								<?=$row['fullname']?>
 							</h5>
 							<p class="mb-0 font-weight-bold text-sm">
-								<?= $row['position'] ?>
+								<?=$row['position']?>
 							</p>
 						</div>
 					</div>
-					<?php endwhile; ?>
+					<?php endwhile;?>
 					<div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
-						
+
 					</div>
 				</div>
 			</div>
@@ -181,18 +182,18 @@ if (isset($_POST['regBtn'])) {
 										<div class="form-group">
 											<label for="example-text-input" class="form-control-label">Department</label>
 											<?php $sql = "SELECT id, department_name FROM departments";
-											$result = mysqli_query($conn, $sql);
-											if (!$result) {
-    											die("Query failed: " . mysqli_error($conn));
-											}
-											?>
+$result = mysqli_query($conn, $sql);
+if (!$result) {
+    die("Query failed: " . mysqli_error($conn));
+}
+?>
 											<select class="form-control" name="department">
 												<option disabled selected hidden>Choose One</option>
 												<?php
-                            						while ($row = mysqli_fetch_assoc($result)) {
-													echo '<option value="' . $row['department_name'] . '">' . $row['department_name'] . '</option>';
-												}
-												?>
+while ($row = mysqli_fetch_assoc($result)) {
+    echo '<option value="' . $row['department_name'] . '">' . $row['department_name'] . '</option>';
+}
+?>
 											</select>
 										</div>
 									</div>

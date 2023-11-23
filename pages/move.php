@@ -1,12 +1,12 @@
 <?php
-    $conn = mysqli_connect("localhost", "root", "", "equipments_db");
-    session_start();
-    if(!isset($_SESSION['username'])){
-       header('location:sign-in.php');
-       exit;
-  } else{
-		$user = $_SESSION['username'];
-	}
+$conn = mysqli_connect("localhost", "root", "", "equipments_db");
+session_start();
+if (!isset($_SESSION['username'])) {
+    header('location:sign-in.php');
+    exit;
+} else {
+    $user = $_SESSION['username'];
+}
 ?>
 <?php
 
@@ -22,14 +22,14 @@ if (isset($_POST['moveBtn'])) {
     $officerReceiving = $_POST['officerReceiving'];
     $returnDate = $_POST['returnDate'];
     $authorization = $_POST['authorization'];
-	$image = $_POST['imageFile'];
-	$item = $_POST['item'];
-	$date = date('Y-m-d');
+    $image = $_POST['imageFile'];
+    $item = $_POST['item'];
+    $date = date('Y-m-d');
     // Prepare and execute the SQL INSERT query
     $sql = "INSERT INTO `movements_tbl`(`serial`, `item`, `brand`, `imgFile`, `deptTaking`, `inCharge`, `defect`, `deptReceiving`, `inChargeReceive`, `returnDate`, `authority`, `date`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ssssssssssss", $serial, $item, $brand, $image, $dept, $inCharge, $defect, $newDepartment, $officerReceiving, $returnDate, $authorization, $date);
-    
+
     if ($stmt->execute()) {
         echo "Equipment movement data inserted successfully!";
     } else {
@@ -69,35 +69,36 @@ if (isset($_POST['moveBtn'])) {
 		<span class="mask bg-primary opacity-6"></span>
 	</div>
 
-	<?php include('aside.php'); ?>
+	<?php include 'aside.php';?>
 
 	<div class="main-content position-relative max-height-vh-100 h-100">
+	<?php include 'navbar.php';?>
 		<div class="card shadow-lg mx-4 card-profile-bottom">
 			<div class="card-body p-3">
 				<div class="row gx-4">
 					<div class="col-auto">
 						<?php
-							$fetchuser = $_SESSION['username'];
-							$stmt = $conn->prepare("SELECT * FROM users WHERE fullname = '$fetchuser'");
-							$stmt->execute();
-							$result = $stmt->get_result();
-							while ($row = $result->fetch_assoc()):
-						  ?>
+$fetchuser = $_SESSION['username'];
+$stmt = $conn->prepare("SELECT * FROM users WHERE fullname = '$fetchuser'");
+$stmt->execute();
+$result = $stmt->get_result();
+while ($row = $result->fetch_assoc()):
+?>
 						<div class="avatar avatar-xl position-relative">
-							<img src="uploads/<?= $row['profile_pic'] ?>" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
+							<img src="uploads/<?=$row['profile_pic']?>" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
 						</div>
 					</div>
 					<div class="col-auto my-auto">
 						<div class="h-100">
 							<h5 class="mb-1">
-								<?= $row['fullname'] ?>
+								<?=$row['fullname']?>
 							</h5>
 							<p class="mb-0 font-weight-bold text-sm">
-								<?= $row['position'] ?>
+								<?=$row['position']?>
 							</p>
 						</div>
 					</div>
-					<?php endwhile; ?>
+					<?php endwhile;?>
 					<div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
 
 					</div>
@@ -110,18 +111,18 @@ if (isset($_POST['moveBtn'])) {
 					<div class="card">
 						<div class="card-header pb-0">
 							<div class="row">
-								<div class="col-4">
+								<div class="col-12 col-md-4">
 									<div class="d-flex align-items-center">
 										<p class="mb-0 text-uppercase"><b>Move Equipment</b></p>
 									</div>
 								</div>
-								<div class="col-8">
+								<div class="col-12 col-md-8">
 									<form method="post" role="form">
 										<div class="row">
-											<div class="col-6">
+											<div class="col-8 col-md-6">
 												<input class="form-control" type="text" placeholder="enter equipment serial number" name="searchSerial">
 											</div>
-											<div class="col-6">
+											<div class="col-4 col-md-6">
 												<input type="submit" value="Search" class="form-control btn btn-primary" name="search">
 											</div>
 										</div>
@@ -131,62 +132,62 @@ if (isset($_POST['moveBtn'])) {
 
 						</div>
 						<div class="card-body">
-							<?php							
-	
-								if(isset($_POST['search'])){
-									$searchQuery = $_POST['searchSerial'];
-									$sql = "SELECT * FROM equipment WHERE serial = '$searchQuery'";
-									$result = mysqli_query($conn, $sql);
-									if (mysqli_num_rows($result) > 0) {
-                              // output data of each row
-                              		while($row = mysqli_fetch_assoc($result)) {
-                                  
-                      			?>
+							<?php
+
+if (isset($_POST['search'])) {
+    $searchQuery = $_POST['searchSerial'];
+    $sql = "SELECT * FROM equipment WHERE serial = '$searchQuery'";
+    $result = mysqli_query($conn, $sql);
+    if (mysqli_num_rows($result) > 0) {
+        // output data of each row
+        while ($row = mysqli_fetch_assoc($result)) {
+
+            ?>
 							<form method="post" role="form" action="move.php">
-								<input type="text" hidden value="<?php echo $row['image'];?>" name="imageFile">
-								<input type="text" hidden value="<?php echo $row['item'];?>" name="item">
+								<input type="text" hidden value="<?php echo $row['image']; ?>" name="imageFile">
+								<input type="text" hidden value="<?php echo $row['item']; ?>" name="item">
 								<div class="row">
 									<div class="col-md-6">
 										<div class="form-group">
 											<label for="example-text-input" class="form-control-label">Serial Number</label>
-											<input class="form-control" type="text" readonly name="serial" value="<?php echo $row['serial'];?>">
+											<input class="form-control" type="text" readonly name="serial" value="<?php echo $row['serial']; ?>">
 										</div>
 									</div>
 									<div class="col-md-6">
 										<div class="form-group">
 											<label for="example-text-input" class="form-control-label">Make / Brand</label>
-											<input class="form-control" type="text" readonly name="brand" value="<?php echo $row['brand'];?>">
+											<input class="form-control" type="text" readonly name="brand" value="<?php echo $row['brand']; ?>">
 										</div>
 									</div>
 									<div class="col-md-4">
 										<div class="form-group">
 											<label for="example-text-input" class="form-control-label">Department Assigned</label>
-											<input class="form-control" type="text" readonly name="dept" value="<?php echo $row['department'];?>">
+											<input class="form-control" type="text" readonly name="dept" value="<?php echo $row['department']; ?>">
 										</div>
 									</div>
 									<div class="col-md-4">
 										<div class="form-group">
 											<label for="example-text-input" class="form-control-label">Date Assigned to
-											<?php echo $row['department'];?>
+											<?php echo $row['department']; ?>
 											</label>
-											<input type="text" readonly class="form-control" name="assignedDeptDate" value="<?php echo $row['date'];?>">
+											<input type="text" readonly class="form-control" name="assignedDeptDate" value="<?php echo $row['date']; ?>">
 										</div>
 									</div>
 									<div class="col-md-4">
 										<div class="form-group">
-											<label for="example-text-input" class="form-control-label">Oficer In Charge at <?php echo $row['department'];?></label>
-											<input class="form-control" type="text" readonly name="inCharge" value="<?php echo $row['officer'];?>">
+											<label for="example-text-input" class="form-control-label">Oficer In Charge at <?php echo $row['department']; ?></label>
+											<input class="form-control" type="text" readonly name="inCharge" value="<?php echo $row['officer']; ?>">
 										</div>
 									</div>
 								<?php
-										}
-        
-									} else {
-										echo "No equipment found matching your search.";
-									}
-								}
+}
 
-								?>
+    } else {
+        echo "No equipment found matching your search.";
+    }
+}
+
+?>
 									<div class="col-md-4">
 										<div class="form-group">
 											<label for="example-text-input" class="form-control-label">Defects</label>
@@ -201,18 +202,18 @@ if (isset($_POST['moveBtn'])) {
 										<div class="form-group">
 											<label for="example-text-input" class="form-control-label">Transfer to</label>
 											<?php $sql = "SELECT id, department_name FROM departments";
-											$result = mysqli_query($conn, $sql);
-											if (!$result) {
-    											die("Query failed: " . mysqli_error($conn));
-											}
-											?>
+$result = mysqli_query($conn, $sql);
+if (!$result) {
+    die("Query failed: " . mysqli_error($conn));
+}
+?>
 											<select class="form-control" name="newDepartment" required>
 												<option disabled selected hidden>Choose One</option>
 												<?php
-                            						while ($row = mysqli_fetch_assoc($result)) {
-													echo '<option value="' . $row['department_name'] . '">' . $row['department_name'] . '</option>';
-												}
-												?>
+while ($row = mysqli_fetch_assoc($result)) {
+    echo '<option value="' . $row['department_name'] . '">' . $row['department_name'] . '</option>';
+}
+?>
 											</select>
 										</div>
 									</div>
@@ -267,24 +268,7 @@ if (isset($_POST['moveBtn'])) {
 	</div>
 
 	<!--   Core JS Files   -->
-	<script src="../assets/js/core/popper.min.js"></script>
-	<script src="../assets/js/core/bootstrap.min.js"></script>
-	<script src="../assets/js/plugins/perfect-scrollbar.min.js"></script>
-	<script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
-	<script>
-		var win = navigator.platform.indexOf('Win') > -1;
-		if (win && document.querySelector('#sidenav-scrollbar')) {
-			var options = {
-				damping: '0.5'
-			}
-			Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
-		}
-
-	</script>
-	<!-- Github buttons -->
-	<script async defer src="https://buttons.github.io/buttons.js"></script>
-	<!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
-	<script src="../assets/js/argon-dashboard.min.js?v=2.0.4"></script>
+	<?php include 'jsScripts.php';?>
 </body>
 
 </html>

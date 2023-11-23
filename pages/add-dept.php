@@ -1,41 +1,41 @@
 <?php
-    $conn = mysqli_connect("localhost", "root", "", "equipments_db");
-    session_start();
-    if(!isset($_SESSION['username'])){
-       header('location:sign-in.php');
-       exit;
-  } else{
-		$user = $_SESSION['username'];
-	}
+$conn = mysqli_connect("localhost", "root", "", "equipments_db");
+session_start();
+if (!isset($_SESSION['username'])) {
+    header('location:sign-in.php');
+    exit;
+} else {
+    $user = $_SESSION['username'];
+}
 ?>
 
 <?php
 // Check if the form has been submitted
-if(isset($_POST['submitBtn'])) {
+if (isset($_POST['submitBtn'])) {
     // Get form data
     $deptName = $_POST['deptName'];
     $deptPhone = $_POST['deptPhone'];
     $deptOfficer = $_POST['deptOfficer'];
-     
+
     // Create connection
     $conn = new mysqli('localhost', 'root', '', 'equipments_db');
-    
+
     // Check connection
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }
-    
+
     // Prepare and execute SQL statement
     $sql = "INSERT INTO departments (department_name, department_phone, department_officer) VALUES (?, ?, ?)";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("sss", $deptName, $deptPhone, $deptOfficer);
-    
+
     if ($stmt->execute()) {
         echo "<script>alert('Department Created successfully')</script>";
     } else {
         echo "Error: " . $stmt->error;
     }
-    
+
     // Close statement and connection
     $stmt->close();
 }
@@ -62,7 +62,7 @@ if(isset($_POST['submitBtn'])) {
 	<link href="../assets/css/nucleo-svg.css" rel="stylesheet" />
 	<!-- CSS Files -->
 	<link id="pagestyle" href="../assets/css/argon-dashboard.css?v=2.0.4" rel="stylesheet" />
-	
+
 </head>
 
 <body class="g-sidenav-show bg-gray-100">
@@ -70,37 +70,38 @@ if(isset($_POST['submitBtn'])) {
 		<span class="mask bg-primary opacity-6"></span>
 	</div>
 
-	<?php include('aside.php'); ?>
+	<?php include 'aside.php';?>
 
 	<div class="main-content position-relative max-height-vh-100 h-100">
+		<?php include 'navbar.php';?>
 		<div class="card shadow-lg mx-4 card-profile-bottom">
 			<div class="card-body p-3">
 				<div class="row gx-4">
 					<div class="col-auto">
 						<?php
-							$fetchuser = $_SESSION['username'];
-							$stmt = $conn->prepare("SELECT * FROM users WHERE fullname = '$fetchuser'");
-							$stmt->execute();
-							$result = $stmt->get_result();
-							while ($row = $result->fetch_assoc()):
-						  ?>
+$fetchuser = $_SESSION['username'];
+$stmt = $conn->prepare("SELECT * FROM users WHERE fullname = '$fetchuser'");
+$stmt->execute();
+$result = $stmt->get_result();
+while ($row = $result->fetch_assoc()):
+?>
 						<div class="avatar avatar-xl position-relative">
-							<img src="uploads/<?= $row['profile_pic'] ?>" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
+							<img src="uploads/<?=$row['profile_pic']?>" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
 						</div>
 					</div>
 					<div class="col-auto my-auto">
 						<div class="h-100">
 							<h5 class="mb-1">
-								<?= $row['fullname'] ?>
+								<?=$row['fullname']?>
 							</h5>
 							<p class="mb-0 font-weight-bold text-sm">
-								<?= $row['position'] ?>
+								<?=$row['position']?>
 							</p>
 						</div>
 					</div>
-					<?php endwhile; ?>
+					<?php endwhile;?>
 					<div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
-						
+
 					</div>
 				</div>
 			</div>

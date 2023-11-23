@@ -1,13 +1,13 @@
 
 <?php
-    $conn = mysqli_connect("localhost", "root", "", "equipments_db");
-    session_start();
-    if(!isset($_SESSION['username'])){
-       header('location:sign-in.php');
-       exit;
-  } else{
-		$user = $_SESSION['username'];
-	}
+$conn = mysqli_connect("localhost", "root", "", "equipments_db");
+session_start();
+if (!isset($_SESSION['username'])) {
+    header('location:sign-in.php');
+    exit;
+} else {
+    $user = $_SESSION['username'];
+}
 ?>
 
 <!DOCTYPE html>
@@ -33,11 +33,11 @@
 	<link id="pagestyle" href="../assets/css/argon-dashboard.css?v=2.0.4" rel="stylesheet" />
 </head>
 
-<body class="g-sidenav-show   bg-gray-100">
+<body class="g-sidenav-show bg-gray-100">
 	<div class="min-height-300 bg-primary position-absolute w-100"></div>
-	<?php include('aside.php'); ?>
+	<?php include 'aside.php';?>
 
-	<main class="main-content position-relative border-radius-lg ">
+	<main class="main-content position-relative ">
 		<div class="row">
 			<div class="col-12">
 				<div class="p-3 m-3">
@@ -49,9 +49,17 @@
 		<nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl " id="navbarBlur" data-scroll="false">
 
 			<div class="container-fluid py-1 px-3">
+			<div class="row">
+				<div class="col-9">
 				<nav aria-label="breadcrumb">
-					<h4 class="font-weight-bolder text-white mb-0 text-uppercase">Movement authorization</h4>
+					<h4 class="font-weight-bolder text-white mb-0 text-uppercase">Movement Authorization</h4>
+
 				</nav>
+				</div>
+				<div class="col-3 align-items-center">
+				<?php include 'navbar.php';?>
+			</div>
+			</div>
 			</div>
 		</nav>
 		<!-- End Navbar -->
@@ -61,93 +69,77 @@
 					<div class="card mb-4">
 						<div class="card-body px-0 pt-0 pb-2">
 							<div class="table-responsive p-0">
-								
+
 								<table class="table align-items-center mb-0">
 									<thead>
 										<tr>
 											<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Equipment</th>
 											<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Serial No</th>
-											<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Make</th>
-											<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Previous Dept</th>
 											<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">New Dept</th>
 											<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Authorization</th>
 											<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Move date</th>
-											<th class="text-secondary opacity-7"></th>
 										</tr>
 									</thead>
-									
+
 									<tbody>
 										<?php
-											$sql = "SELECT * FROM movements_tbl ORDER BY id DESC";
-											$result = mysqli_query($conn, $sql);
-											if (mysqli_num_rows($result) > 0) {
-											  // output data of each row
-											 while($row = mysqli_fetch_assoc($result)) {
+$sql = "SELECT * FROM movements_tbl ORDER BY id DESC";
+$result = mysqli_query($conn, $sql);
+if (mysqli_num_rows($result) > 0) {
+    // output data of each row
+    while ($row = mysqli_fetch_assoc($result)) {
 
-										?>
+        ?>
 										<tr>
 											<td>
 												<div class="d-flex px-2 py-1">
 													<div>
-														<img src="uploads/<?php echo $row['imgFile'];?>"alt="Country flag" class="border-radius-lg" style="width:50px;">
+														<img src="uploads/<?php echo $row['imgFile']; ?>"alt="<?php echo $row['item']; ?>"  style="width:30px; height:30px'">
 													</div>
 													<div class="d-flex flex-column justify-content-center">
-														<h6 class="mb-0 text-sm"><?php echo $row['item'];?></h6>
-													
+														<h6 class="mb-0 text-sm mx-3"><?php echo $row['item']; ?></h6>
+
 													</div>
 												</div>
 											</td>
 											<td>
-												<p class="text-xs font-weight-bold mb-0"><?php echo $row['serial'];?></p>
-												
-											</td>
-											<td class="align-middle text-center text-sm">
-												<p class="text-xs font-weight-bold mb-0"><?php echo $row['brand'];?></p>
-											</td>
-											
-											<td class="align-middle text-center">
-												<p class="text-xs font-weight-bold mb-0"><?php echo $row['deptTaking'];?></p>
-											</td>
-											
-											<td class="align-middle text-center">
-												<p class="text-xs font-weight-bold mb-0"><?php echo $row['deptReceiving'];?></p>
-											</td>
-											<td class="align-middle text-center">
-												<p class="text-xs font-weight-bold mb-0"><?php echo $row['authority'];?></p>
-											</td>
-											<td class="align-middle text-center">
-												<p class="text-xs font-weight-bold mb-0"><?php echo $row['date'];?></p>
-											</td>
-											<td class="align-middle">
-												<a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
-													Edit
-												</a>
-											</td>
-										</tr>
-										<?php 
-										}
-        
-									} else {
-										echo "No equipment moved.";
-									}
-								
+												<p class="text-xs font-weight-bold mb-0"><?php echo $row['serial']; ?></p>
 
-								?>
+											</td>
+											<td class="align-middle text-center">
+												<p class="text-xs font-weight-bold mb-0"><?php echo $row['deptReceiving']; ?></p>
+											</td>
+											<td class="align-middle text-center">
+												<p class="text-xs font-weight-bold mb-0"><?php echo $row['authority']; ?></p>
+											</td>
+											<td class="align-middle text-center">
+												<p class="text-xs font-weight-bold mb-0"><?php echo $row['date']; ?></p>
+											</td>
+
+										</tr>
+										<?php
+}
+
+} else {
+    echo "No equipment moved.";
+}
+
+?>
 										</tbody>
 								</table>
-								
+
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-			
+
 			<footer class="footer pt-3  ">
 				<div class="container-fluid">
 					<div class="row align-items-center justify-content-lg-between">
 						<div class="col-lg-6 mb-lg-0 mb-4">
 							<div class="copyright text-center text-sm text-muted text-lg-start">
-								© <script> 
+								© <script>
 									document.write(new Date().getFullYear())
 
 								</script>,

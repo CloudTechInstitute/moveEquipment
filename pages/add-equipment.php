@@ -1,24 +1,24 @@
 <?php
-    $conn = mysqli_connect("localhost", "root", "", "equipments_db");
-    session_start();
-    if(!isset($_SESSION['username'])){
-       header('location:sign-in.php');
-       exit;
-  } else{
-		$user = $_SESSION['username'];
-	}
+$conn = mysqli_connect("localhost", "root", "", "equipments_db");
+session_start();
+if (!isset($_SESSION['username'])) {
+    header('location:sign-in.php');
+    exit;
+} else {
+    $user = $_SESSION['username'];
+}
 ?>
-<?php 
+<?php
 if (isset($_POST['addBtn'])) {
     $serial = $_POST['serial'];
-	$item = $_POST['item'];
+    $item = $_POST['item'];
     $brand = $_POST['brand'];
     $department = $_POST['department'];
     $officer = $_POST['officer'];
 
     // Validate and sanitize user inputs (additional validation may be needed)
     $serial = $conn->real_escape_string(htmlspecialchars($serial));
-	$item = $conn->real_escape_string(htmlspecialchars($item));
+    $item = $conn->real_escape_string(htmlspecialchars($item));
     $brand = $conn->real_escape_string(htmlspecialchars($brand));
     $department = $conn->real_escape_string(htmlspecialchars($department));
     $officer = $conn->real_escape_string(htmlspecialchars($officer));
@@ -38,7 +38,7 @@ if (isset($_POST['addBtn'])) {
                 $stmt = $conn->prepare($sql);
                 $stmt->bind_param("sssssss", $serial, $item, $brand, $department, $officer, $profilePic, $date);
 
-                $date = date('Y-m-d'); 
+                $date = date('Y-m-d');
 
                 if ($stmt->execute()) {
                     echo "<script>alert('Equipment added successfully')</script>";
@@ -55,7 +55,7 @@ if (isset($_POST['addBtn'])) {
     } else {
         echo "<script>alert('Invalid input data.')</script>";
     }
-    
+
 }
 ?>
 
@@ -88,38 +88,39 @@ if (isset($_POST['addBtn'])) {
 	<div class="position-absolute w-100 min-height-300 top-0" style="background-image: url('../assets/img/moving.avif'); background-position-y: 50%;">
 		<span class="mask bg-primary opacity-6"></span>
 	</div>
-	
-	<?php include('aside.php'); ?>
-	
+
+	<?php include 'aside.php';?>
+
 	<div class="main-content position-relative max-height-vh-100 h-100">
+	<?php include 'navbar.php';?>
 		<div class="card shadow-lg mx-4 card-profile-bottom">
 			<div class="card-body p-3">
 				<div class="row gx-4">
 					<div class="col-auto">
 						<?php
-							$fetchuser = $_SESSION['username'];
-							$stmt = $conn->prepare("SELECT * FROM users WHERE fullname = '$fetchuser'");
-							$stmt->execute();
-							$result = $stmt->get_result();
-							while ($row = $result->fetch_assoc()):
-						  ?>
+$fetchuser = $_SESSION['username'];
+$stmt = $conn->prepare("SELECT * FROM users WHERE fullname = '$fetchuser'");
+$stmt->execute();
+$result = $stmt->get_result();
+while ($row = $result->fetch_assoc()):
+?>
 						<div class="avatar avatar-xl position-relative">
-							<img src="uploads/<?= $row['profile_pic'] ?>" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
+							<img src="uploads/<?=$row['profile_pic']?>" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
 						</div>
 					</div>
 					<div class="col-auto my-auto">
 						<div class="h-100">
 							<h5 class="mb-1">
-								<?= $row['fullname'] ?>
+								<?=$row['fullname']?>
 							</h5>
 							<p class="mb-0 font-weight-bold text-sm">
-								<?= $row['position'] ?>
+								<?=$row['position']?>
 							</p>
 						</div>
 					</div>
-					<?php endwhile; ?>
+					<?php endwhile;?>
 					<div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
-						
+
 					</div>
 				</div>
 			</div>
@@ -158,18 +159,18 @@ if (isset($_POST['addBtn'])) {
 									<div class="form-group">
 										<label for="example-text-input" class="form-control-label">Department Assigned</label>
 										<?php $sql = "SELECT id, department_name FROM departments";
-											$result = mysqli_query($conn, $sql);
-											if (!$result) {
-    											die("Query failed: " . mysqli_error($conn));
-											}
-											?>
+$result = mysqli_query($conn, $sql);
+if (!$result) {
+    die("Query failed: " . mysqli_error($conn));
+}
+?>
 											<select class="form-control" name="department" required>
 												<option disabled selected hidden>Choose One</option>
 												<?php
-                            						while ($row = mysqli_fetch_assoc($result)) {
-													echo '<option value="' . $row['department_name'] . '">' . $row['department_name'] . '</option>';
-												}
-												?>
+while ($row = mysqli_fetch_assoc($result)) {
+    echo '<option value="' . $row['department_name'] . '">' . $row['department_name'] . '</option>';
+}
+?>
 											</select>
 									</div>
 								</div>
@@ -203,7 +204,7 @@ if (isset($_POST['addBtn'])) {
 				<div class="container-fluid">
 					<div class="row align-items-center justify-content-lg-between">
 						<div class="col-lg-6 mb-lg-0 mb-4">
-							<div class="copyright text-center text-sm text-muted text-lg-start"> All Rights Reserved, 
+							<div class="copyright text-center text-sm text-muted text-lg-start"> All Rights Reserved,
 								© <script>
 									document.write(new Date().getFullYear())
 								</script>
@@ -214,7 +215,7 @@ if (isset($_POST['addBtn'])) {
 			</footer>
 		</div>
 	</div>
-	
+
 	<!--   Core JS Files   -->
 	<script src="../assets/js/core/popper.min.js"></script>
 	<script src="../assets/js/core/bootstrap.min.js"></script>
