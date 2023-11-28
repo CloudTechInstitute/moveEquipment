@@ -183,7 +183,7 @@ if (mysqli_num_rows($result) > 0) {
     while ($row = mysqli_fetch_assoc($result)) {
 
         ?>
-							<table class="table align-items-center table-bordered ">
+							<table class="table align-items-center">
 								<tbody>
 									<tr class="text-start ">
 										<td class="w-30">

@@ -15,6 +15,7 @@ if (isset($_POST['regBtn'])) {
     $email = $_POST['email'];
     $department = $_POST['department'];
     $position = $_POST['position'];
+    $privillege = $_POST['privillege'];
     $address = $_POST['address'];
     $password = $_POST['password'];
     $city = $_POST['city'];
@@ -28,11 +29,12 @@ if (isset($_POST['regBtn'])) {
     $department = htmlspecialchars($department);
     $position = htmlspecialchars($position);
     $address = htmlspecialchars($address);
+    $privillege = htmlspecialchars($privillege);
     $city = htmlspecialchars($fullname);
     $phone = htmlspecialchars($phone);
     $gps = htmlspecialchars($gps);
 
-    if ($fullname && $email && $department && $position && $address && $city && $phone && $gps) {
+    if ($fullname && $email && $department && $position && $address && $city && $phone && $gps && $privillege) {
         // Create connection
         $conn = new mysqli('localhost', 'root', '', 'equipments_db');
 
@@ -61,9 +63,9 @@ if (isset($_POST['regBtn'])) {
             if (in_array($fileType, $allowTypes)) {
                 if (move_uploaded_file($_FILES['profilePic']['tmp_name'], $targetFilePath)) {
                     // Prepare and execute SQL statement
-                    $sql = "INSERT INTO users (fullname, email, department, position, address, password, city, phone, gps, profile_pic, date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    $sql = "INSERT INTO users (fullname, email, department, position, privilege, address, password, city, phone, gps, profile_pic, date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                     $stmt = $conn->prepare($sql);
-                    $stmt->bind_param("sssssssssss", $fullname, $email, $department, $position, $address, $password, $city, $phone, $gps, $profilePic, $date);
+                    $stmt->bind_param("ssssssssssss", $fullname, $email, $department, $position, $privillege, $address, $password, $city, $phone, $gps, $profilePic, $date);
 
                     if ($stmt->execute()) {
                         echo "<script>alert('User added successfully')</script>";
@@ -78,8 +80,6 @@ if (isset($_POST['regBtn'])) {
                 echo "<script>alert('Invalid image format. Allowed formats: JPG, JPEG, PNG, GIF.')</script>";
             }
 
-            // Close connection
-            $conn->close();
         }
     } else {
         echo "<script>alert('Invalid input data.')</script>";
@@ -133,7 +133,7 @@ $result = $stmt->get_result();
 while ($row = $result->fetch_assoc()):
 ?>
 						<div class="avatar avatar-xl position-relative">
-							<img src="uploads/<?=$row['profile_pic']?>" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
+							<img src="uploads/<?=$row['profile_pic']?>" alt="profile_image" style="height: 80px; width: 80px;" class="rounded-circle">
 						</div>
 					</div>
 					<div class="col-auto my-auto">
@@ -178,7 +178,7 @@ while ($row = $result->fetch_assoc()):
 											<input class="form-control" type="email" name="email">
 										</div>
 									</div>
-									<div class="col-md-4">
+									<div class="col-md-3">
 										<div class="form-group">
 											<label for="example-text-input" class="form-control-label">Department</label>
 											<?php $sql = "SELECT id, department_name FROM departments";
@@ -197,16 +197,27 @@ while ($row = mysqli_fetch_assoc($result)) {
 											</select>
 										</div>
 									</div>
-									<div class="col-md-4">
+									<div class="col-md-3">
 										<div class="form-group">
 											<label for="example-text-input" class="form-control-label">Position</label>
 											<input class="form-control" type="text" name="position">
 										</div>
 									</div>
-									<div class="col-md-4">
+									<div class="col-md-3">
 										<div class="form-group">
 											<label for="example-text-input" class="form-control-label">Image</label>
 											<input class="form-control" type="file" name="profilePic">
+										</div>
+									</div>
+									<div class="col-md-3">
+										<div class="form-group">
+											<label for="example-text-input" class="form-control-label">Privillege</label>
+											<select class="form-control" name="privillege">
+												<option disabled selected hidden>Choose one</option>
+												<option value="admin">Admin</option>
+                                                <option value="user">User</option>
+                                            </select>
+											</select>
 										</div>
 									</div>
 								</div>

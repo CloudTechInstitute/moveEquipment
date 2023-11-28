@@ -40,9 +40,7 @@
 						<span class="nav-link-text ms-1">Add Equipment</span>
 					</a>
 				</li>
-				<li class="nav-item mt-3">
-					<h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Account pages</h6>
-				</li>
+
 				<li class="nav-item">
 					<a class="nav-link" href="../pages/new-user.php">
 						<div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
@@ -58,9 +56,10 @@
 						</div>
 						<span class="nav-link-text ms-1">Register New Department</span>
 					</a>
+
 					<a class="nav-link" href="../pages/logout.php">
 						<div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-							
+
 						</div>
 						<span class="nav-link-text ms-1 text-danger">Logout</span>
 					</a>
@@ -68,4 +67,3 @@
 			</ul>
 		</div>
 	</aside>
-	

@@ -10,30 +10,30 @@ if (isset($_POST['signin'])) {
 
     if (!$conn) {
         die("Connection failed: " . mysqli_connect_error());
-    } 
-		$username = mysqli_real_escape_string($conn, $username);
+    }
+    $username = mysqli_real_escape_string($conn, $username);
 
-		// Prepare a SQL statement to retrieve user data
-		$sql = "SELECT id, fullname, password FROM users WHERE fullname = '$username' AND password = '$password' LIMIT 1";
-		$result = mysqli_query($conn, $sql);
+    // Prepare a SQL statement to retrieve user data
+    $sql = "SELECT id, fullname, password FROM users WHERE fullname = '$username' AND password = '$password' LIMIT 1";
+    $result = mysqli_query($conn, $sql);
 
-		if (!$result) {
-			die("Query failed: " . mysqli_error($conn));
-		}
+    if (!$result) {
+        die("Query failed: " . mysqli_error($conn));
+    }
 
-		if (mysqli_num_rows($result) === 1) {
-			$row = mysqli_fetch_assoc($result);
-			$_SESSION['user_id'] = $row['id'];
-			$_SESSION['username'] = $row['fullname'];
-			echo '<script>alert("Login Successful")</script>';
-			header("Location: dashboard.php"); // Redirect to the dashboard after successful login
-			exit();
-		  } 
-			else {
-			// User not found
-			echo '<script>alert("Login not succesful. Try Again")</script>';
-			}
-		} 
+    if (mysqli_num_rows($result) === 1) {
+        $row = mysqli_fetch_assoc($result);
+        $_SESSION['user_id'] = $row['id'];
+        $_SESSION['username'] = $row['fullname'];
+        $_SESSION['access'] = $row['privilege'];
+        echo '<script>alert("Login Successful")</script>';
+        header("Location: dashboard.php");
+        exit();
+    } else {
+        // User not found
+        echo '<script>alert("Login not succesful. Try Again")</script>';
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
