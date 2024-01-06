@@ -19,7 +19,7 @@ if (!isset($_SESSION['username'])) {
 	<link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
 	<link rel="icon" type="image/png" href="../assets/img/favicon.png">
 	<title>
-		All Equipments
+		Worker Report
 	</title>
 	<!--     Fonts and icons     -->
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
@@ -33,11 +33,11 @@ if (!isset($_SESSION['username'])) {
 	<link id="pagestyle" href="../assets/css/argon-dashboard.css?v=2.0.4" rel="stylesheet" />
 </head>
 
-<body class="g-sidenav-show   bg-gray-100">
+<body class="g-sidenav-show bg-gray-100">
 	<div class="min-height-300 bg-primary position-absolute w-100"></div>
 	<?php include 'aside.php';?>
 
-	<main class="main-content position-relative border-radius-lg ">
+	<main class="main-content position-relative">
 		<div class="row">
 			<div class="col-12">
 				<div class="p-3 m-3">
@@ -46,13 +46,13 @@ if (!isset($_SESSION['username'])) {
 			</div>
 		</div>
 		<!-- Navbar -->
-		<nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl " id="navbarBlur" data-scroll="false">
+		<nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none  " id="navbarBlur" data-scroll="false">
 
 			<div class="container-fluid py-1 px-3">
-			<div class="row">
+				<div class="row">
 				<div class="col-9">
 				<nav aria-label="breadcrumb">
-					<h4 class="font-weight-bolder text-white mb-0 text-uppercase">All Equipment</h4>
+					<h4 class="font-weight-bolder text-white mb-0 text-uppercase">Workers Report</h4>
 
 				</nav>
 				</div>
@@ -61,6 +61,7 @@ if (!isset($_SESSION['username'])) {
 			</div>
 			</div>
 			</div>
+
 		</nav>
 		<!-- End Navbar -->
 		<div class="container-fluid py-4">
@@ -73,19 +74,22 @@ if (!isset($_SESSION['username'])) {
 								<table class="table align-items-center mb-0">
 									<thead>
 										<tr>
-											<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Equipment</th>
-											<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Serial No</th>
-											<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Make</th>
-											<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Department Assigned</th>
-											<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Officer</th>
-											<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Date of Entry</th>
-											<!-- <th class="text-secondary opacity-7"></th> -->
+											<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
+											<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Staff ID</th>
+											<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Address</th>
+											<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Email</th>
+											<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Telephone</th>
+											<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Gender</th>
+											<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Date of birth</th>
+											<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Duties</th>
+											<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Department</th>
+											<th class="text-secondary opacity-7"></th>
 										</tr>
 									</thead>
 
 									<tbody>
 										<?php
-$sql = "SELECT * FROM equipment ORDER BY id DESC";
+$sql = "SELECT * FROM workers_tbl ORDER BY id DESC";
 $result = mysqli_query($conn, $sql);
 if (mysqli_num_rows($result) > 0) {
     // output data of each row
@@ -94,38 +98,47 @@ if (mysqli_num_rows($result) > 0) {
         ?>
 										<tr>
 											<td>
-												<div class="d-flex px-2 py-1">
+												<div class="">
 													<div>
-														<img src="uploads/<?php echo $row['image']; ?>"alt="Country flag" style="width:30px; height:30px;">
-													</div>
-													<div class="d-flex flex-column justify-content-center">
-														<h6 class="mb-0 text-sm mx-3"><?php echo $row['item']; ?></h6>
+                                                    <h6 class="m-2"><?php echo $row['fname'] . ' ' . $row['lname']; ?></h6>
+														</h6>
 
 													</div>
 												</div>
 											</td>
 											<td>
-												<p class="text-xs font-weight-bold mb-0"><?php echo $row['serial']; ?></p>
+												<p class="text-xs font-weight-bold mb-0"><?php echo $row['staffID']; ?></p>
 
 											</td>
 											<td class="align-middle text-center text-sm">
-												<p class="text-xs font-weight-bold mb-0"><?php echo $row['brand']; ?></p>
+												<p class="text-xs font-weight-bold mb-0"><?php echo $row['address']; ?></p>
+											</td>
+											<td class="align-middle text-center">
+												<p class="text-xs font-weight-bold mb-0"><?php echo $row['email']; ?></p>
+											</td>
+											<td class="align-middle text-center">
+												<p class="text-xs font-weight-bold mb-0"><?php echo $row['telephone']; ?></p>
+											</td>
+											<td class="align-middle text-center">
+												<p class="text-xs font-weight-bold mb-0"><?php echo $row['gender']; ?></p>
+											</td>
+											<td class="align-middle text-center">
+												<p class="text-xs font-weight-bold mb-0"><?php echo $row['dob']; ?></p>
+											</td>
+											<td class="align-middle text-center">
+												<p class="text-xs font-weight-bold mb-0"><?php echo $row['duties']; ?></p>
 											</td>
 											<td class="align-middle text-center">
 												<p class="text-xs font-weight-bold mb-0"><?php echo $row['department']; ?></p>
 											</td>
-											<td class="align-middle text-center">
-												<p class="text-xs font-weight-bold mb-0"><?php echo $row['officer']; ?></p>
+											<td class="align-middle">
+											<button type="button" class="" data-bs-toggle="modal" data-bs-target="#staticBackdrop" title="edit" style="border:none">
+                                            <i class="fas fa-edit text-primary text-center"></i>
+                                            </button>
+                                            <button type="button" class="" title="delete" style="border:none">
+                                            <i class="fas fa-trash-alt text-danger text-center"></i>
+                                            </button>
 											</td>
-											<td class="align-middle text-center">
-												<p class="text-xs font-weight-bold mb-0"><?php echo $row['date']; ?></p>
-											</td>
-
-											<!-- <td class="align-middle">
-												<a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
-													Edit
-												</a>
-											</td> -->
 										</tr>
 										<?php
 }
@@ -161,6 +174,24 @@ if (mysqli_num_rows($result) > 0) {
 			</footer>
 		</div>
 	</main>
+
+	<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        content will go here
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Understood</button>
+      </div>
+    </div>
+  </div>
+</div>
 	<!--   Core JS Files   -->
 	<script src="../assets/js/core/popper.min.js"></script>
 	<script src="../assets/js/core/bootstrap.min.js"></script>

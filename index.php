@@ -1,7 +1,6 @@
 <?php
-$redirect_url = "pages/index.php";
+$redirect_url = "pages";
 
 header("Location: $redirect_url");
 
 exit();
-?>

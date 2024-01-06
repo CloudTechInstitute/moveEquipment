@@ -84,7 +84,7 @@ if (!isset($_SESSION['username'])) {
 											<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">New Dept</th>
 											<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Authorization</th>
 											<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Move date</th>
-											<th class="text-secondary opacity-7"></th>
+
 										</tr>
 									</thead>
 
@@ -137,11 +137,7 @@ if (mysqli_num_rows($result) > 0) {
 											<td class="align-middle text-center">
 												<p class="text-xs font-weight-bold mb-0"><?php echo $row['date']; ?></p>
 											</td>
-											<td class="align-middle">
-											<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-  Edit
-</button>
-											</td>
+
 										</tr>
 										<?php
 }
@@ -178,7 +174,7 @@ if (mysqli_num_rows($result) > 0) {
 		</div>
 	</main>
 
-	<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">

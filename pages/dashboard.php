@@ -42,7 +42,6 @@ if (!isset($_SESSION['username'])) {
 		<!-- End Navbar -->
 		<div class="container-fluid py-4">
 			<div class="row">
-
 				<div class="col-6 col-xl-3 col-md-6 mb-xl-0 mb-4">
 					<div class="card">
 						<a href="equipments.php">
@@ -164,8 +163,70 @@ echo $total;
 					</div>
 				</div>
 			</div>
+			<div class="row mt-3">
+				<div class="col-6 col-xl-3 col-md-6 mb-xl-0 mb-4">
+					<div class="card">
+						<a href="departments.php">
+							<div class="card-body p-3">
+								<div class="row">
+									<div class="col-8">
+										<div class="numbers">
+											<p class="d-none d-md-block text-sm mb-0 text-uppercase font-weight-bold">Students</p>
+											<h3 class="font-weight-bolder">
+												<?php
+$query = "SELECT COUNT(*) FROM `students_tbl`";
+$res = mysqli_query($conn, $query);
+$row = mysqli_fetch_array($res);
+$total = $row[0];
+echo $total;
+?>
+											</h3>
 
-			<div class="row mt-4">
+										</div>
+									</div>
+									<div class="col-4 text-end">
+										<div class="icon icon-shape bg-gradient-warning shadow-warning text-center rounded-circle">
+											<i class="ni ni-circle-08 text-lg opacity-10" aria-hidden="true"></i>
+										</div>
+									</div>
+								</div>
+							</div>
+						</a>
+					</div>
+				</div>
+				<div class="col-6 col-xl-3 col-md-6 mb-xl-0 mb-4">
+					<div class="card">
+						<a href="departments.php">
+							<div class="card-body p-3">
+								<div class="row">
+									<div class="col-8">
+										<div class="numbers">
+											<p class="d-none d-md-block text-sm mb-0 text-uppercase font-weight-bold">Workers</p>
+											<h3 class="font-weight-bolder">
+												<?php
+$query = "SELECT COUNT(*) FROM `workers_tbl`";
+$res = mysqli_query($conn, $query);
+$row = mysqli_fetch_array($res);
+$total = $row[0];
+echo $total;
+?>
+											</h3>
+
+										</div>
+									</div>
+									<div class="col-4 text-end">
+										<div class="icon icon-shape bg-gradient-secondary shadow-warning text-center rounded-circle">
+											<i class="ni ni-circle-08 text-lg opacity-10" aria-hidden="true"></i>
+										</div>
+									</div>
+								</div>
+							</div>
+						</a>
+					</div>
+				</div>
+			</div>
+</div>
+			<div class="row mt-4 p-4">
 				<div class="col-lg-7 mb-lg-0 mb-4">
 					<div class="card ">
 
@@ -303,6 +364,29 @@ $row = mysqli_fetch_array($res);
 $total = $row[0];
 echo $total;
 ?> with defects... Click to check</span>
+											</div>
+										</div>
+										<div class="d-flex">
+											<button class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-right my-auto"><i class="ni ni-bold-right" aria-hidden="true"></i></button>
+										</div>
+									</li>
+								</a>
+								<a href="assessments.php">
+									<li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+										<div class="d-flex align-items-center">
+											<div class="icon icon-shape icon-sm me-3 bg-gradient-dark shadow text-center">
+												<i class="ni ni-box-2 text-white opacity-10"></i>
+											</div>
+											<div class="d-flex flex-column">
+												<h6 class="mb-1 text-dark text-sm">Worker Assessment</h6>
+												<span class="text-xs">
+													<?php
+$query = "SELECT COUNT(*) FROM `assessment`";
+$res = mysqli_query($conn, $query);
+$row = mysqli_fetch_array($res);
+$total = $row[0];
+echo $total;
+?> Assessment(s)... Click to check</span>
 											</div>
 										</div>
 										<div class="d-flex">
